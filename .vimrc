@@ -16,6 +16,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'ntpeters/vim-better-whitespace' " :StripWhitespace
 Plugin 'ciaranm/detectindent'
+Plugin 'jamessan/vim-gnupg'
 
 if iCanHazVundle == 0 " Vundle install hacks
 	echo "Installing Vundles, please ignore key map error messages"
