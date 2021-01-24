@@ -1,0 +1,120 @@
+#! /usr/bin/env swift
+import CoreBluetooth
+import Darwin
+import Foundation
+
+let deviceName = "BluetoothMouse3600"
+
+// MARK: Timeout
+let timeoutSeconds: Double = 30
+
+DispatchQueue.global(qos: .default).asyncAfter(wallDeadline: DispatchWallTime.now() + timeoutSeconds) {
+    // Quit here
+    print("error: timed out talking to ", deviceName)
+    exit(-1)
+}
+
+
+
+// MARK: CoreBluetooth code
+let batteryService = CBUUID(string: "180F")
+let batteryCharacteristic = CBUUID(string: "2A19")
+
+class CentralDelegate: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
+    var group = DispatchGroup()
+    var peripheral: CBPeripheral!
+    
+    override init() {
+        group.enter()
+    }
+    
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        switch central.state {
+        case .poweredOn:
+            self.findBatteryStatus(central)
+        default:
+            print("error: bluetooth is not powered on")
+            exit(-1)
+        }
+    }
+    
+    func findBatteryStatus(_ central: CBCentralManager) {
+        let connected: [CBPeripheral] = central.retrieveConnectedPeripherals(withServices: [batteryService])
+        
+        guard let mousePeripheral = (connected.last {
+            $0.name == deviceName
+        }) else {
+            print(String(format: "error: %@ not found", deviceName))
+            exit(-1)
+        }
+        
+        self.peripheral = mousePeripheral
+        central.connect(mousePeripheral)
+    }
+    
+    func centralManager(_ central: CBCentralManager,
+                        didConnect peripheral: CBPeripheral) {
+        peripheral.delegate = self
+        peripheral.discoverServices([batteryService])
+    }
+    
+    func centralManager(_ central: CBCentralManager,
+                didFailToConnect peripheral: CBPeripheral,
+                error: Error?) {
+        print("error: failed to connect to", deviceName)
+        exit(-1_)
+    }
+
+    
+    func peripheral(_ peripheral: CBPeripheral,
+                    didDiscoverServices error: Error?) {
+        guard let service = (peripheral.services?.first {
+            $0.uuid == batteryService
+        }) else {
+            print("error: didn't find battery service")
+            exit(-1)
+        }
+        
+        peripheral.discoverCharacteristics([batteryCharacteristic], for: service)
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral,
+                    didDiscoverCharacteristicsFor service: CBService,
+                    error: Error?) {
+        guard let characteristic = (service.characteristics?.first {
+            $0.uuid == batteryCharacteristic
+        }) else {
+            print("error: didn't find batter characterstic")
+            exit(-1)
+        }
+        
+        peripheral.readValue(for: characteristic)
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral,
+           didUpdateValueFor characteristic: CBCharacteristic,
+           error: Error?) {
+        
+        guard let value = characteristic.value else {
+            print("error: no value returned from characteristic")
+            exit(-1)
+        }
+        
+        if value.isEmpty {
+            print("error: value returned but it was empty")
+            exit(-1)
+        } else {
+            print(String(format: "%@ battery: %d%%", deviceName, value[0]))
+            exit(0)
+        }
+    }
+    
+}
+
+// MARK: Main
+let delegate = CentralDelegate()
+let central = CBCentralManager(delegate: delegate, queue: DispatchQueue.global(qos: .default))
+
+
+// Sleep til end
+Thread.sleep(forTimeInterval: TimeInterval(timeoutSeconds * 1.5))
