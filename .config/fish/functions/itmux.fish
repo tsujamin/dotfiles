@@ -1,7 +1,8 @@
-# Defined in /var/folders/07/jwb4g7cx1277dvy9tszxstp80000gn/T//fish.Ubp3Z0/itmux.fish @ line 2
+# Defined in /var/folders/07/jwb4g7cx1277dvy9tszxstp80000gn/T//fish.I1YK3R/itmux.fish @ line 2
 function itmux
 if test (count $argv) -ne 1
-echo "itmux session_name"
+echo "usage: itmux session_name"
+return 1
 end
 
 set -l session_name "$argv[1]"
