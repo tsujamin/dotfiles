@@ -1,4 +1,4 @@
-# Defined via `source`
+# Defined in /var/folders/07/jwb4g7cx1277dvy9tszxstp80000gn/T//fish.gfTsx5/remove_orphans.fish @ line 2
 function remove_orphans --wraps=find\ .\ -type\ f\ -depth\ 1\ \|\ egrep\ -o\ \\\'./\[\^\\.\]+\\\'\ \|\ sort\ \|\ uniq\ -c\ \|\ grep\ \\\'\ 1\ \\\'\ \|\ egrep\ -o\ \\\'\\./.\*\\\'\ \|\ xargs\ -I\%\ rm\ \%.JPG\ \%.CR3 --wraps=find\ .\ -type\ f\ -depth\ 1\ \|\ egrep\ -o\ \\\'./\[\^\\.\]+\\\'\ \|\ sort\ \|\ uniq\ -c\ \|\ grep\ \\\'\ 1\ \\\'\ \|\ egrep\ -o\ \\\'\\./.\\\*\\\'\ \|\ xargs\ -I\%\ rm\ \%.JPG\ \%.CR3 --description alias\ remove_orphans\ find\ .\ -type\ f\ -depth\ 1\ \|\ egrep\ -o\ \\\'./\[\^\\.\]+\\\'\ \|\ sort\ \|\ uniq\ -c\ \|\ grep\ \\\'\ 1\ \\\'\ \|\ egrep\ -o\ \\\'\\./.\\\*\\\'\ \|\ xargs\ -I\%\ rm\ \%.JPG\ \%.CR3
-  find . -type f -depth 1 | egrep -o \'./[^\.]+\' | sort | uniq -c | grep \' 1 \' | egrep -o \'\./.\*\' | xargs -I% rm %.JPG %.CR3 $argv; 
+  find . -type f -depth 1 | egrep -o './[^\.]+' | sort | uniq -c | grep ' 1 ' | egrep -o '\./.*' | xargs -I% rm %.JPG %.CR3; 
 end
