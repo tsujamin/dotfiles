@@ -1,0 +1,4 @@
+# Defined in /var/folders/07/jwb4g7cx1277dvy9tszxstp80000gn/T//fish.bp1vtY/@remove-suffix.fish @ line 2
+function @remove-suffix
+	echo "IyEgL3Vzci9iaW4vZW52IHB5dGhvbjMKaW1wb3J0IHN5cwppbXBvcnQgb3MKCmlmIGxlbihzeXMuYXJndikgIT0gMjoKICAgIHByaW50KCJyZW1vdmUtc3VmZml4IFNVRkZJWCIpCiAgICBleGl0KDEpCiAgICAKU1VGRklYID0gc3lzLmFyZ3ZbMV0KCmZvciBmIGluIG9zLmxpc3RkaXIoIi4iKToKICAgIGlmIFNVRkZJWCBpbiBmOgogICAgICAgIG5ld19uYW1lID0gZi5yZXBsYWNlKFNVRkZJWCwgIiIpCiAgICAgICAgb3MucmVuYW1lKGYsIG5ld19uYW1lKQoK" | base64 -d | python3 - $argv
+end
