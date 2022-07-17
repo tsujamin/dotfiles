@@ -10,5 +10,5 @@ set -gx HOMEBREW_NO_ANALYTICS 1
 set -gx LESS "-r"
 set -gx LESS_ADVANCED_PREPROCESSOR 1
 
-checkmail
+@checkmail
 
