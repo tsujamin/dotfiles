@@ -12,3 +12,9 @@ set -gx LESS_ADVANCED_PREPROCESSOR 1
 
 @checkmail
 
+
+
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+set --export --prepend PATH "/Users/benjaminroberts/.rd/bin"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
